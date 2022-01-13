@@ -69,84 +69,8 @@ void Grid::create(int w, int h, int numMines) {
 		}
 	}
 
-	//create tile hints
-	for (int i = 0; i < height; i++) {
-
-		for (int j = 0; j < width; j++) {
-
-			//check tile to the left
-			if (j - 1 > -1) {
-
-				if (tiles[j - 1][i]->hasMine()) {
-
-					tiles[j][i]->addHint();
-				}
-			}
-
-			//check tile diagonal top/left
-			if (j - 1 > -1 && i - 1 > -1) {
-
-				if (tiles[j - 1][i - 1]->hasMine()) {
-
-					tiles[j][i]->addHint();
-				}
-			}
-
-			//check tile above
-			if (i - 1 > -1) {
-
-				if (tiles[j][i - 1]->hasMine()) {
-
-					tiles[j][i]->addHint();
-				}
-			}
-
-			//check tile diagonal top/right
-			if (j + 1 < width && i - 1 > -1) {
-
-				if (tiles[j + 1][i - 1]->hasMine()) {
-
-					tiles[j][i]->addHint();
-				}
-			}
-
-			//check tile to the right
-			if (j + 1 < width) {
-
-				if (tiles[j + 1][i]->hasMine()) {
-
-					tiles[j][i]->addHint();
-				}
-			}
-
-			//check tile diagonal bottom/right
-			if (j + 1 < width && i + 1 < height) {
-
-				if (tiles[j + 1][i + 1]->hasMine()) {
-
-					tiles[j][i]->addHint();
-				}
-			}
-
-			//check tile below
-			if (i + 1 < height) {
-
-				if (tiles[j][i + 1]->hasMine()) {
-
-					tiles[j][i]->addHint();
-				}
-			}
-
-			//check tile diagonal bottom/left
-			if (j - 1 > -1 && i + 1 < height) {
-
-				if (tiles[j - 1][i + 1]->hasMine()) {
-
-					tiles[j][i]->addHint();
-				}
-			}
-		}
-	}
+	//create tile hints (number representing adjacent mines) 
+	addHints();
 }
 
 void Grid::update() {
@@ -181,15 +105,7 @@ void Grid::reveal(int x, int y) {
 			}
 		}
 
-		//update the field
-		update();
-
-		//print field to screen
-		display();
-
-		std::cout << "Mine hit at position " << x << ", " << y << "!\n\n";
-
-		std::cout << "---------- G A M E  O V E R ! ----------\n\n";
+		printLoseScreen(x, y);
 
 		destroy();
 
@@ -421,15 +337,7 @@ bool Grid::checkWin() {
 	//check if all safe tiles have been revealed and all mines have been flagged
 	if (count == m_numMines && safeTilesRevealed == numSafeTiles) {
 
-		system("clear");
-
-		//update the field
-		update();
-
-		//print field to screen
-		display();
-
-		std::cout << "---------- Y O U  W I N ! ----------\n\n";
+		printWinScreen();
 
 		return false;
 	}
@@ -458,4 +366,112 @@ void Grid::destroy() {
 
 	//remove grid array
 	delete[] tiles;
+}
+
+void Grid::addHints() {
+	
+	for (int i = 0; i < height; i++) {
+
+		for (int j = 0; j < width; j++) {
+
+			//check tile to the left
+			if (j - 1 > -1) {
+
+				if (tiles[j - 1][i]->hasMine()) {
+
+					tiles[j][i]->addHint();
+				}
+			}
+
+			//check tile diagonal top/left
+			if (j - 1 > -1 && i - 1 > -1) {
+
+				if (tiles[j - 1][i - 1]->hasMine()) {
+
+					tiles[j][i]->addHint();
+				}
+			}
+
+			//check tile above
+			if (i - 1 > -1) {
+
+				if (tiles[j][i - 1]->hasMine()) {
+
+					tiles[j][i]->addHint();
+				}
+			}
+
+			//check tile diagonal top/right
+			if (j + 1 < width && i - 1 > -1) {
+
+				if (tiles[j + 1][i - 1]->hasMine()) {
+
+					tiles[j][i]->addHint();
+				}
+			}
+
+			//check tile to the right
+			if (j + 1 < width) {
+
+				if (tiles[j + 1][i]->hasMine()) {
+
+					tiles[j][i]->addHint();
+				}
+			}
+
+			//check tile diagonal bottom/right
+			if (j + 1 < width && i + 1 < height) {
+
+				if (tiles[j + 1][i + 1]->hasMine()) {
+
+					tiles[j][i]->addHint();
+				}
+			}
+
+			//check tile below
+			if (i + 1 < height) {
+
+				if (tiles[j][i + 1]->hasMine()) {
+
+					tiles[j][i]->addHint();
+				}
+			}
+
+			//check tile diagonal bottom/left
+			if (j - 1 > -1 && i + 1 < height) {
+
+				if (tiles[j - 1][i + 1]->hasMine()) {
+
+					tiles[j][i]->addHint();
+				}
+			}
+		}
+	}
+	
+}
+
+void Grid::printWinScreen() {
+	
+	system("clear");
+
+	//update the field
+	update();
+
+	//print field to screen
+	display();
+
+	std::cout << "---------- Y O U  W I N ! ----------\n\n";
+}
+
+void Grid::printLoseScreen(int x, int y) {
+	
+	//update the field
+	update();
+
+	//print field to screen
+	display();
+
+	std::cout << "Mine hit at position " << x << ", " << y << "!\n\n";
+
+	std::cout << "---------- G A M E  O V E R ! ----------\n\n";
 }

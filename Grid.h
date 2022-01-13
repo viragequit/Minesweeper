@@ -19,6 +19,26 @@ private:
 	Tile*** tiles;
 
 	void expand(int x, int y);
+	
+	//Divide and CONQUER!
+	
+	/*void expandTopLeft(int x, int y);
+	
+	void expandTopMiddle(int x, int y);
+	
+	void expandTopRight(int x, int y);
+	
+	void expandMiddleLeft(int x, int y);
+	
+	void expandMiddleRight(int x, int y);
+	
+	void expandBottomLeft(int x, int y);
+	
+	void expandBottomMiddle(int x, int y);
+	
+	void expandBottomRight(int x, int y);*/
+	
+	void addHints();
 
 public:
 
@@ -41,6 +61,10 @@ public:
 	bool checkWin();
 
 	void destroy();
+	
+	void printWinScreen();
+	
+	void printLoseScreen(int x, int y);
 };
 
 #endif
